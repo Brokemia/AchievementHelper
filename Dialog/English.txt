@@ -1,0 +1,9 @@
+﻿AchievementHelper_UI_Achievements=Achievements
+
+Achievement_AchievementHelper_ModName=Achievement Helper
+
+Achievement_AchievementHelper_Open_Options_Name=Open the Options Menu
+Achievement_AchievementHelper_Open_Options_Description=Test Description
+
+Achievement_AchievementHelper_Open_Achievements_Name=Open the Achievements Menu
+Achievement_AchievementHelper_Open_Achievements_Description=Pretty self-explanatory

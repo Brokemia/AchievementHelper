@@ -1,0 +1,3 @@
+[submodule "ExpressionParser"]
+	path = ExpressionParser
+	url = https://github.com/soukoku/ExpressionParser.git

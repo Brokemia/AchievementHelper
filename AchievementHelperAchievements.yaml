@@ -1,0 +1,7 @@
+﻿- Mod: AchievementHelper
+  Name: Open_Achievements
+  Icon: areaselect/startpoint
+- Mod: AchievementHelper
+  Name: Open_Options
+  Icon: feather/feather
+  Invisible: true

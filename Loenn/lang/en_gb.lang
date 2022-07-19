@@ -1,0 +1,19 @@
+﻿# -- Entities --
+# entities.entityName.placements.name.*
+# entities.entityName.placements.description.*
+# entities.entityName.attributes.name.*
+# entities.entityName.attributes.description.*
+
+mods.achievementHelper.name=Achievement Helper
+
+# Achievement Controller
+triggers.achievementHelper/achievementController.placements.name.controller=Achievement Controller
+triggers.achievementHelper/achievementController.placements.description.controller=Triggers an achievement to be collected when certain conditions are met.
+#triggers.achievementHelper/achievementController.attributes.description.modName=The mod the achievement is for.\nMust match the Mod field in your AchievementHelperAchievements.yaml.
+#triggers.achievementHelper/achievementController.attributes.description.achievementName=The internal name of the achievement.\nMust match the Name field in your AchievementHelperAchievements.yaml.
+
+# Trigger Achievement Trigger
+triggers.achievementHelper/triggerAchievement.placements.name.trigger=Trigger Achievement
+triggers.achievementHelper/triggerAchievement.placements.description.trigger=Triggers an achievement to be collected.
+triggers.achievementHelper/triggerAchievement.attributes.description.modName=The mod the achievement is for.\nMust match the Mod field in your AchievementHelperAchievements.yaml.
+triggers.achievementHelper/triggerAchievement.attributes.description.achievementName=The internal name of the achievement.\nMust match the Name field in your AchievementHelperAchievements.yaml.
