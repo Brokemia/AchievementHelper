@@ -18,9 +18,18 @@
         <PackageReference PrivateAssets="all" ExcludeAssets="runtime" />
         <Reference Private="false" />
     </ItemDefinitionGroup>
+    <ItemGroup>
+      <Compile Remove="ExpressionParser\**" />
+      <EmbeddedResource Remove="ExpressionParser\**" />
+      <None Remove="ExpressionParser\**" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="MonoMod.RuntimeDetour" Version="21.01.11.01" PrivateAssets="all" ExcludeAssets="runtime" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="ExpressionParser\src\ExpressionParser\ExpressionParser.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -10,5 +10,9 @@ namespace Celeste.Mod.AchievementHelper {
         public static bool HasAchievement(string mod, string name) {
             return AchievementManager.Instance.HasAchievement(mod, name);
         }
+
+        public static void ConditionChanged(string condition) {
+            AchievementHelperModule.Instance.ConditionWatcher.DoCallbacks(condition);
+        }
     }
 }

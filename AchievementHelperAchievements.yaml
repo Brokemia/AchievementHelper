@@ -2,6 +2,6 @@
   Name: Open_Achievements
   Icon: areaselect/startpoint
 - Mod: AchievementHelper
-  Name: Open_Options
+  Name: Test
   Icon: feather/feather
-  Invisible: true
+  SuperSecret: true

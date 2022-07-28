@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Soukoku.ExpressionParser;
+using System.Collections.Generic;
 
 namespace Celeste.Mod.AchievementHelper {
     public class AchievementManager {
@@ -8,21 +9,38 @@ namespace Celeste.Mod.AchievementHelper {
 
         private readonly Dictionary<string, Dictionary<string, Achievement>> RegisteredAchievements = new();
 
+        private readonly Dictionary<string, Dictionary<string, int>> watchingIDs = new();
+
         public void RegisterAchievement(Achievement achievement) {
             if(!RegisteredAchievements.ContainsKey(achievement.Mod)) {
                 RegisteredAchievements[achievement.Mod] = new();
             }
+            // Unregister any old callback
+            if(watchingIDs.ContainsKey(achievement.Mod) && watchingIDs[achievement.Mod].ContainsKey(achievement.Name)) {
+                AchievementHelperModule.Instance.ConditionWatcher.RemoveCallback(watchingIDs[achievement.Mod][achievement.Name]);
+                watchingIDs[achievement.Mod].Remove(achievement.Name);
+            }
             RegisteredAchievements[achievement.Mod][achievement.Name] = achievement;
+            // Register callbacks for a condition
+            if (achievement.Condition != null && !achievement.Condition.Equals("")) {
+                watchingIDs[achievement.Mod][achievement.Name] = AchievementHelperModule.Instance.ConditionWatcher.WatchConditions(achievement.Condition, () => {
+                    if (AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(achievement.Condition, true).Equals(ExpressionToken.True)) {
+                        TriggerAchievement(achievement.Mod, achievement.Name);
+                    }
+                });
+            }
         }
 
         public void TriggerAchievement(string mod, string name) {
             if (!HasAchievement(mod, name)) {
-                if(!AchievementHelperModule.SaveData.Achievements.ContainsKey(mod)) {
-                    AchievementHelperModule.SaveData.Achievements.Add(mod, new());
+                if(!AchievementHelperModule.ModSaveData.Achievements.ContainsKey(mod)) {
+                    AchievementHelperModule.ModSaveData.Achievements.Add(mod, new());
                 }
-                AchievementHelperModule.SaveData.Achievements[mod].Add(name);
+                AchievementHelperModule.ModSaveData.Achievements[mod].Add(name);
                 if (TryGet(mod, name, out Achievement achievement)) {
-                    AchievementHelperModule.Instance.Component.ShowPopup(achievement);
+                    if (!achievement.Invisible) {
+                        AchievementHelperModule.Instance.Component.ShowPopup(achievement);
+                    }
                     foreach (var implied in achievement.Implies) {
                         TriggerAchievement(implied.Item1, implied.Item2);
                     }
@@ -51,7 +69,7 @@ namespace Celeste.Mod.AchievementHelper {
         }
 
         public bool HasAchievement(string mod, string name) {
-            return AchievementHelperModule.SaveData.Achievements.ContainsKey(mod) && AchievementHelperModule.SaveData.Achievements[mod].Contains(name);
+            return AchievementHelperModule.ModSaveData.Achievements.ContainsKey(mod) && AchievementHelperModule.ModSaveData.Achievements[mod].Contains(name);
         }
 
     }

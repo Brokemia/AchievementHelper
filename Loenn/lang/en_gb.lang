@@ -7,13 +7,15 @@
 mods.achievementHelper.name=Achievement Helper
 
 # Achievement Controller
-triggers.achievementHelper/achievementController.placements.name.controller=Achievement Controller
-triggers.achievementHelper/achievementController.placements.description.controller=Triggers an achievement to be collected when certain conditions are met.
-#triggers.achievementHelper/achievementController.attributes.description.modName=The mod the achievement is for.\nMust match the Mod field in your AchievementHelperAchievements.yaml.
-#triggers.achievementHelper/achievementController.attributes.description.achievementName=The internal name of the achievement.\nMust match the Name field in your AchievementHelperAchievements.yaml.
+entities.achievementHelper/achievementController.placements.name.controller=Achievement Controller
+entities.achievementHelper/achievementController.placements.description.controller=Awards an achievement when certain conditions are met.
+entities.achievementHelper/achievementController.attributes.description.condition=The condition that must be true to award this acheivement. Leave blank for no condition
+entities.achievementHelper/achievementController.attributes.description.modName=The mod the achievement is for.\nMust match the Mod field in your AchievementHelperAchievements.yaml.
+entities.achievementHelper/achievementController.attributes.description.achievementName=The internal name of the achievement.\nMust match the Name field in your AchievementHelperAchievements.yaml.
 
 # Trigger Achievement Trigger
 triggers.achievementHelper/triggerAchievement.placements.name.trigger=Trigger Achievement
-triggers.achievementHelper/triggerAchievement.placements.description.trigger=Triggers an achievement to be collected.
+triggers.achievementHelper/triggerAchievement.placements.description.trigger=Awards an achievement when the player enters it, as long as certain conditions are met.
+triggers.achievementHelper/triggerAchievement.attributes.description.condition=The condition that must be true to award this acheivement. Leave blank for no condition
 triggers.achievementHelper/triggerAchievement.attributes.description.modName=The mod the achievement is for.\nMust match the Mod field in your AchievementHelperAchievements.yaml.
 triggers.achievementHelper/triggerAchievement.attributes.description.achievementName=The internal name of the achievement.\nMust match the Name field in your AchievementHelperAchievements.yaml.

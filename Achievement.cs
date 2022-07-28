@@ -32,5 +32,7 @@ namespace Celeste.Mod.AchievementHelper {
         public bool SuperSecret { get; set; }
 
         public bool Invisible { get; set; }
+
+        public string Condition { get; set; }
     }
 }

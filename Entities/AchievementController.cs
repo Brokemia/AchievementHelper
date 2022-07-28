@@ -1,6 +1,8 @@
 ﻿using Celeste.Mod.Entities;
+using Microsoft.Xna.Framework;
 using Monocle;
 using Soukoku.ExpressionParser;
+using System;
 
 namespace Celeste.Mod.AchievementHelper.Entities {
     [CustomEntity("achievementHelper/achievementController")]
@@ -10,8 +12,8 @@ namespace Celeste.Mod.AchievementHelper.Entities {
         private string modName, achievementName;
         private int watchingID;
 
-        public AchievementController(EntityData data) {
-            data.Attr("condition", "false");
+        public AchievementController(EntityData data, Vector2 offset) {
+            condition = data.Attr("condition", "0");
             modName = data.Attr("modName");
             achievementName = data.Attr("achievementName");
         }
@@ -35,7 +37,7 @@ namespace Celeste.Mod.AchievementHelper.Entities {
         }
 
         private void Check() {
-            if (AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(condition, true).Equals(ExpressionToken.True)) {
+            if (condition.Equals("") || AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(condition, true).Equals(ExpressionToken.True)) {
                 AchievementManager.Instance.TriggerAchievement(modName, achievementName);
                 RemoveSelf();
             }

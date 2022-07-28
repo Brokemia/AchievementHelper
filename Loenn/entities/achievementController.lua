@@ -2,7 +2,7 @@
 
 achievementController.name = "achievementHelper/achievementController"
 achievementController.depth = 0
-achievementController.texture = "@Internal@/northern_lights"
+achievementController.texture = "Loenn/AchievementHelper/AchievementController"
 achievementController.placements = {
     name = "controller",
     data = {
