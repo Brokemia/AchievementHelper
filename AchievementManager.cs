@@ -23,6 +23,9 @@ namespace Celeste.Mod.AchievementHelper {
             RegisteredAchievements[achievement.Mod][achievement.Name] = achievement;
             // Register callbacks for a condition
             if (achievement.Condition != null && !achievement.Condition.Equals("")) {
+                if(!watchingIDs.ContainsKey(achievement.Mod)) {
+                    watchingIDs[achievement.Mod] = new();
+                }
                 watchingIDs[achievement.Mod][achievement.Name] = AchievementHelperModule.Instance.ConditionWatcher.WatchConditions(achievement.Condition, () => {
                     if (AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(achievement.Condition, true).Equals(ExpressionToken.True)) {
                         TriggerAchievement(achievement.Mod, achievement.Name);

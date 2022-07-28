@@ -1,5 +1,5 @@
 - Name: AchievementHelper
-  Version: 1.0.0
+  Version: 1.0.2
   DLL: bin/AchievementHelper.dll
   Dependencies:
     - Name: Everest

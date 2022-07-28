@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # mod release
-AchievementHelper.zip
+*.zip
 
 # User-specific files
 *.rsuser
