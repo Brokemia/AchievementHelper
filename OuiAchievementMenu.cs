@@ -25,6 +25,8 @@ namespace Celeste.Mod.AchievementHelper {
 			AchievementManager.Instance.TriggerAchievement("AchievementHelper", "Open_Achievements");
 			menu = new();
 			menu.Add(new TextMenu.Header(Dialog.Clean("AchievementHelper_UI_Achievements")));
+
+			float maxWidth = 0;
 			foreach (string mod in AchievementManager.Instance.GetAllMods()) {
 				List<string> achievements = AchievementManager.Instance.GetAllAchievementsForMod(mod).ToList();
 				if(achievements.Count > 0) {
@@ -34,10 +36,18 @@ namespace Celeste.Mod.AchievementHelper {
 				foreach(string name in achievements) {
 					if(AchievementManager.Instance.TryGet(mod, name, out Achievement achievement)) {
 						bool collected = AchievementManager.Instance.HasAchievement(mod, name);
-						if ((collected || !achievement.SuperSecret) && !achievement.Invisible) {
-							menu.Add(new AchievementMenuItem(achievement, collected));
+						if ((collected || !achievement.SecretAchievement) && !achievement.Invisible) {
+							var item = new AchievementMenuItem(achievement, collected);
+							maxWidth = Math.Max(maxWidth, item.Width);
+							menu.Add(item);
 						}
                     }
+                }
+            }
+
+			foreach(var item in menu.Items) {
+				if(item is AchievementMenuItem ach) {
+					ach.MinWidth = maxWidth;
                 }
             }
 			

@@ -56,7 +56,6 @@ namespace Celeste.Mod.AchievementHelper {
                 float width = Math.Max(AchievementMinWidth, AchievementHeight + IconTextSeparation + MinimumRightPadding + Math.Max(ActiveFont.Measure(name).X * NameScale, ActiveFont.Measure(modName).X * ModNameScale));
                 Vector2 topRight = Vector2.Lerp(new(Celeste.TargetWidth - width, Celeste.TargetHeight), new(Celeste.TargetWidth - width, Celeste.TargetHeight - AchievementHeight), transitionTimer / TransitionTime);
                 MDraw.Rect(topRight, width, AchievementHeight, Color.DarkSlateBlue);
-                MDraw.HollowRect(topRight, width, AchievementHeight, Color.DimGray);
 
                 if (current.IconTextures != null) {
                     MTexture tex = current.IconTextures[(int)frame];
@@ -65,6 +64,9 @@ namespace Celeste.Mod.AchievementHelper {
 
                 ActiveFont.DrawOutline(name, topRight + new Vector2(AchievementHeight + IconTextSeparation, AchievementHeight / 3), new Vector2(0, 0.5f), new Vector2(NameScale), Color.White, 2, Color.Black);
                 ActiveFont.DrawOutline(modName, topRight + new Vector2(AchievementHeight + IconTextSeparation, AchievementHeight * 3 / 4), new Vector2(0, 0.5f), new Vector2(ModNameScale), Color.LightGray, 2, Color.Black);
+
+                MDraw.HollowRect(topRight, width, AchievementHeight, Color.DimGray);
+                MDraw.HollowRect(topRight + Vector2.One, width - 2, AchievementHeight - 2, Color.DimGray);
 
                 MDraw.SpriteBatch.End();
             }

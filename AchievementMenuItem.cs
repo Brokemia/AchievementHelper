@@ -23,9 +23,14 @@ namespace Celeste.Mod.AchievementHelper {
 		public Achievement Achievement { get; private set; }
 		private bool collected;
 
+		private MTexture secretIcon;
+
+		public float MinWidth = 0;
+
 		public AchievementMenuItem(Achievement achievement, bool collected) {
 			Achievement = achievement;
 			this.collected = collected;
+			secretIcon = GFX.Gui["areas/null"];
 			Selectable = true;
 			OnEnter += delegate {
 				selected = true;
@@ -49,7 +54,7 @@ namespace Celeste.Mod.AchievementHelper {
 		public override float LeftWidth() {
 			string name = Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Name");
 			string description = Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Description");
-			return Math.Max(AchievementMinWidth, AchievementHeight + IconTextSeparation + MinimumRightPadding + Math.Max(ActiveFont.Measure(name).X * NameScale, ActiveFont.Measure(description).X * ModNameScale));
+			return Calc.Max(AchievementMinWidth, MinWidth, AchievementHeight + IconTextSeparation + MinimumRightPadding + Math.Max(ActiveFont.Measure(name).X * NameScale, ActiveFont.Measure(description).X * ModNameScale));
 		}
 
 		/// <inheritdoc />
@@ -59,15 +64,15 @@ namespace Celeste.Mod.AchievementHelper {
 
 		public override void Render(Vector2 position, bool highlighted) {
 			float alpha = Container.Alpha;
-			string name = Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Name");
-			string description = (!collected && Achievement.Secret) ? "???" : Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Description");
+			string name = (!collected && Achievement.SecretName) ? "???" : Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Name");
+			string description = (!collected && Achievement.SecretDescription) ? "???" : Dialog.Clean("Achievement_" + Achievement.Mod + "_" + Achievement.Name + "_Description");
 
 			float width = LeftWidth();
 			Vector2 topRight = position - new Vector2(0, AchievementHeight / 2);
 			Draw.Rect(topRight, width, AchievementHeight, Color.DarkSlateBlue * alpha);
 
 			if (Achievement.IconTextures != null) {
-				MTexture tex = Achievement.IconTextures[selected ? (int)frame : 0];
+				MTexture tex = (!collected && Achievement.SecretIcon) ? secretIcon : Achievement.IconTextures[selected ? (int)frame : 0];
 				tex.Draw(topRight + new Vector2((AchievementHeight - IconSize) / 2), Vector2.Zero, Color.White * alpha, IconSize / Math.Max(tex.Width, tex.Height));
 			}
 

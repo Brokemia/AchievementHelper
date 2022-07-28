@@ -27,9 +27,13 @@ namespace Celeste.Mod.AchievementHelper {
 
         public float AnimationSpeed { get; set; } = 12f;
 
-        public bool Secret { get; set; }
+        public bool SecretDescription { get; set; }
 
-        public bool SuperSecret { get; set; }
+        public bool SecretName { get; set; }
+
+        public bool SecretIcon { get; set; }
+
+        public bool SecretAchievement { get; set; }
 
         public bool Invisible { get; set; }
 

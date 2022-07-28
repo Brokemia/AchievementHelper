@@ -4,4 +4,4 @@
 - Mod: AchievementHelper
   Name: Test
   Icon: feather/feather
-  SuperSecret: true
+  SecretAchievement: true
