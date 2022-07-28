@@ -51,7 +51,7 @@ namespace Celeste.Mod.AchievementHelper {
                 );
 
                 string name = Dialog.Clean("Achievement_" + current.Mod + "_" + current.Name + "_Name");
-                string modName = Dialog.Clean("Achievement_" + current.Mod + "_ModName");
+                string modName = Dialog.Clean("Achievement_" + current.Mod + "_" + current.Name + "_Description");
 
                 float width = Math.Max(AchievementMinWidth, AchievementHeight + IconTextSeparation + MinimumRightPadding + Math.Max(ActiveFont.Measure(name).X * NameScale, ActiveFont.Measure(modName).X * ModNameScale));
                 Vector2 topRight = Vector2.Lerp(new(Celeste.TargetWidth - width, Celeste.TargetHeight), new(Celeste.TargetWidth - width, Celeste.TargetHeight - AchievementHeight), transitionTimer / TransitionTime);
