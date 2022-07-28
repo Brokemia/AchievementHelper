@@ -65,8 +65,6 @@ namespace Celeste.Mod.AchievementHelper {
 			float width = LeftWidth();
 			Vector2 topRight = position - new Vector2(0, AchievementHeight / 2);
 			Draw.Rect(topRight, width, AchievementHeight, Color.DarkSlateBlue * alpha);
-			Draw.HollowRect(topRight, width, AchievementHeight, (selected ? Color.Yellow : Color.DimGray) * alpha);
-			Draw.HollowRect(topRight + Vector2.One, width - 2, AchievementHeight - 2, (selected ? Color.Yellow : Color.DimGray) * alpha);
 
 			if (Achievement.IconTextures != null) {
 				MTexture tex = Achievement.IconTextures[selected ? (int)frame : 0];
@@ -75,8 +73,11 @@ namespace Celeste.Mod.AchievementHelper {
 
 			ActiveFont.DrawOutline(name, topRight + new Vector2(AchievementHeight + IconTextSeparation, AchievementHeight / 3), new Vector2(0, 0.5f), new Vector2(NameScale), Color.White * alpha, 2, Color.Black * alpha * alpha * alpha);
 			ActiveFont.DrawOutline(description, topRight + new Vector2(AchievementHeight + IconTextSeparation, AchievementHeight * 3 / 4), new Vector2(0, 0.5f), new Vector2(ModNameScale), Color.LightGray * alpha, 2, Color.Black * alpha * alpha * alpha);
-			
-			if(!collected) {
+
+			Draw.HollowRect(topRight, width, AchievementHeight, (selected ? Color.Yellow : Color.DimGray) * alpha);
+			Draw.HollowRect(topRight + Vector2.One, width - 2, AchievementHeight - 2, (selected ? Color.Yellow : Color.DimGray) * alpha);
+
+			if (!collected) {
 				Draw.Rect(topRight, width, AchievementHeight, Color.Black * 0.5f * alpha);
 			}
 		}

@@ -125,7 +125,7 @@ namespace Celeste.Mod.AchievementHelper {
         }
 
         private void LoadAchievements(ModAsset asset) {
-            Logger.Log(LogLevel.Verbose, "AchievementHelper", "Found AchievementHelperAchievements.yaml");
+            Logger.Log(LogLevel.Verbose, "AchievementHelper", "Found AchievementHelperAchievements.yaml in " + asset.Source?.Name);
             List<Achievement> achievements = asset.Deserialize<List<Achievement>>();
             foreach (Achievement achievement in achievements) {
                 AchievementManager.Instance.RegisterAchievement(achievement);

@@ -31,7 +31,6 @@ namespace Celeste.Mod.AchievementHelper {
 					menu.Add(new TextMenu.SubHeader(Dialog.Clean("Achievement_" + mod + "_ModName")));
                 }
 
-				achievements.Sort();
 				foreach(string name in achievements) {
 					if(AchievementManager.Instance.TryGet(mod, name, out Achievement achievement)) {
 						bool collected = AchievementManager.Instance.HasAchievement(mod, name);
