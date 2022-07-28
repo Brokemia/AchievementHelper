@@ -104,6 +104,15 @@ namespace Celeste.Mod.AchievementHelper {
             context.RegisterFunction(ConditionWatcher.PLAYER_X_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Tracker.GetEntity<Player>() is Player player ? new ExpressionToken(player.X.ToString()) : new ExpressionToken("0")));
             context.RegisterFunction(ConditionWatcher.PLAYER_Y_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Tracker.GetEntity<Player>() is Player player ? new ExpressionToken(player.Y.ToString()) : new ExpressionToken("0")));
 
+            // Utility
+            context.RegisterFunction("strContains", new FunctionRoutine(2, (ctx, args) => args[0].Value.Contains(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
+            context.RegisterFunction("strStartsWith", new FunctionRoutine(2, (ctx, args) => args[0].Value.StartsWith(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
+            context.RegisterFunction("strEndsWith", new FunctionRoutine(2, (ctx, args) => args[0].Value.EndsWith(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
+            context.RegisterFunction("strLen", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.Length.ToString())));
+            context.RegisterFunction("strToLower", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.ToLower())));
+            context.RegisterFunction("strToUpper", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.ToUpper())));
+            context.RegisterFunction("strTrim", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.Trim())));
+
             ExpressionEvaluator = new Evaluator(context);
         }
 
