@@ -5,6 +5,7 @@ using System.Linq;
 using Celeste.Mod.AchievementHelper.Conditions;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.ModInterop;
 using MonoMod.Utils;
 using Soukoku.ExpressionParser;
 
@@ -32,6 +33,7 @@ namespace Celeste.Mod.AchievementHelper {
         }
 
         public override void Load() {
+            typeof(AchievementHelperExports).ModInterop();
             Celeste.Instance.Components.Add(Component = new(Celeste.Instance));
 
             On.Celeste.OuiChapterSelect.Render += OuiChapterSelect_Render;
