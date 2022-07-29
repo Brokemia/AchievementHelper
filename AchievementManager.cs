@@ -35,7 +35,7 @@ namespace Celeste.Mod.AchievementHelper {
         }
 
         public void TriggerAchievement(string mod, string name) {
-            if (!HasAchievement(mod, name)) {
+            if (AchievementHelperModule.ModSaveData?.Achievements != null && !HasAchievement(mod, name)) {
                 if(!AchievementHelperModule.ModSaveData.Achievements.ContainsKey(mod)) {
                     AchievementHelperModule.ModSaveData.Achievements.Add(mod, new());
                 }
