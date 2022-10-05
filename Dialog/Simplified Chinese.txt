@@ -1,0 +1,7 @@
+AchievementHelper_UI_Achievements=成就
+
+Achievement_AchievementHelper_ModName=Achievement Helper
+AchievementHelper_UI_MenuBinding=打开成就列表
+
+Achievement_AchievementHelper_Open_Achievements_Name=打开成就列表
+Achievement_AchievementHelper_Open_Achievements_Description=无需多言

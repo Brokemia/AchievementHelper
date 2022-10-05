@@ -1,4 +1,5 @@
 ﻿AchievementHelper_UI_Achievements=Achievements
+AchievementHelper_UI_MenuBinding=Open Achievement Menu
 
 Achievement_AchievementHelper_ModName=Achievement Helper
 
