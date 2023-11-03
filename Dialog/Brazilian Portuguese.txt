@@ -1,0 +1,7 @@
+﻿AchievementHelper_UI_Achievements=Conquistas
+AchievementHelper_UI_MenuBinding=Abrir menu de Conquistas
+
+Achievement_AchievementHelper_ModName=Achievement Helper
+
+Achievement_AchievementHelper_Open_Achievements_Name=Abra o menu de conquista
+Achievement_AchievementHelper_Open_Achievements_Description=Bem auto explicativo.

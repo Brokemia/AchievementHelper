@@ -25,19 +25,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MonoMod.RuntimeDetour" Version="21.01.11.01" PrivateAssets="all" ExcludeAssets="runtime" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="ExpressionParser\src\ExpressionParser\ExpressionParser.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="$(CelestePrefix)\Celeste.exe">
             <Private>false</Private>
         </Reference>
         <Reference Include="$(CelestePrefix)\MMHOOK_Celeste.dll">
             <Private>false</Private>
+        </Reference>
+        <Reference Include="FNA">
+          <HintPath>..\..\FNA.dll</HintPath>
+        </Reference>
+        <Reference Include="MonoMod.RuntimeDetour">
+          <HintPath>..\..\MonoMod.RuntimeDetour.dll</HintPath>
+        </Reference>
+        <Reference Include="MonoMod.Utils">
+          <HintPath>..\..\MonoMod.Utils.dll</HintPath>
         </Reference>
         <Reference Include="System.ValueTuple">
           <HintPath>..\..\System.ValueTuple.dll</HintPath>
@@ -48,13 +49,7 @@
     </ItemGroup>
 
     <Choose>
-        <When Condition="'$(CelesteType)' == 'FNA'">
-            <ItemGroup>
-                <Reference Include="$(CelestePrefix)\FNA.dll">
-                    <Private>false</Private>
-                </Reference>
-            </ItemGroup>
-        </When>
+        <When Condition="'$(CelesteType)' == 'FNA'" />
 
         <When Condition="'$(CelesteType)' == 'XNA'">
             <ItemGroup>
@@ -73,6 +68,7 @@
 
     <Target Name="CopyFiles" AfterTargets="Build">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="bin" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).pdb" DestinationFolder="bin" />
     </Target>
 
 </Project>

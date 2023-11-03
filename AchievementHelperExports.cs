@@ -12,7 +12,7 @@ namespace Celeste.Mod.AchievementHelper {
         }
 
         public static void ConditionChanged(string condition) {
-            AchievementHelperModule.Instance.ConditionWatcher.DoCallbacks(condition);
+            ConditionHelperImports.ConditionChanged(condition);
         }
     }
 }

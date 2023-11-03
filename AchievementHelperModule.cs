@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Celeste.Mod.AchievementHelper.Conditions;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.ModInterop;
-using MonoMod.Utils;
-using Soukoku.ExpressionParser;
 
 namespace Celeste.Mod.AchievementHelper {
     public class AchievementHelperModule : EverestModule {
@@ -24,16 +21,13 @@ namespace Celeste.Mod.AchievementHelper {
         private float mainMenuEasing;
         private Wiggler mainMenuWiggle = Wiggler.Create(0.4f, 4f);
 
-        public Evaluator ExpressionEvaluator { get; private set; }
-
-        public ConditionWatcher ConditionWatcher { get; private set; } = new();
-
         public AchievementHelperModule() {
             Instance = this;
         }
 
         public override void Load() {
             typeof(AchievementHelperExports).ModInterop();
+            typeof(ConditionHelperImports).ModInterop();
             Celeste.Instance.Components.Add(Component = new(Celeste.Instance));
 
             On.Celeste.OuiChapterSelect.Render += OuiChapterSelect_Render;
@@ -44,76 +38,11 @@ namespace Celeste.Mod.AchievementHelper {
             On.Celeste.SaveData.InitializeDebugMode += SaveData_InitializeDebugMode;
 
             Everest.Content.OnUpdate += onModAssetUpdate;
-
-            LoadEvaluator();
-            ConditionWatcher.Load();
         }
 
         private void SaveData_InitializeDebugMode(On.Celeste.SaveData.orig_InitializeDebugMode orig, bool loadExisting) {
             orig(loadExisting);
             ModSaveData.Achievements.Clear();
-        }
-
-        private void LoadEvaluator() {
-            var context = new EvaluationContext();
-
-            context.RegisterFunction(ConditionWatcher.FLAG_FCN, new FunctionRoutine(1, (ctx, args) => (Engine.Scene is Level level && level.Session.GetFlag(args[0].Value)) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.BERRIES_CH_FCN, new FunctionRoutine(0, (ctx, args) => 
-                (SaveData.Instance == null || Engine.Scene is not Level level || level.Session is not Session session) ? new ExpressionToken("-1") 
-                : new(SaveData.Instance.Areas[session.Area.ID].Modes[(int)session.Area.Mode].TotalStrawberries.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.BERRIES_LEVELSET_FCN, new FunctionRoutine(0, (ctx, args) =>
-                (SaveData.Instance == null) ? new ExpressionToken("-1")
-                : new(SaveData.Instance.LevelSetStats.TotalStrawberries.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.GOLDENS_LEVELSET_FCN, new FunctionRoutine(0, (ctx, args) =>
-                (SaveData.Instance == null) ? new ExpressionToken("-1")
-                : new(SaveData.Instance.LevelSetStats.TotalGoldenStrawberries.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.GOLDENS_TOTAL_FCN, new FunctionRoutine(0, (ctx, args) =>
-                (SaveData.Instance == null) ? new ExpressionToken("-1")
-                : new(SaveData.Instance.TotalGoldenStrawberries.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.BERRY_ID_COLLECTED_FCN, new FunctionRoutine(2, (ctx, args) =>
-                (SaveData.Instance != null && SaveData.Instance.CheckStrawberry(SaveData.Instance.LastArea_Safe, new EntityID(args[0].Value, (int)args[1].ToDecimal(context)))) ? ExpressionToken.True : ExpressionToken.False
-            ));
-            context.RegisterFunction(ConditionWatcher.GRABBED_GOLDEN_FCN, new FunctionRoutine(0, (ctx, args) => (Engine.Scene is Level level && level.Session.GrabbedGolden) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.STARTED_FROM_BEGINNING_FCN, new FunctionRoutine(0, (ctx, args) => (Engine.Scene is Level level && level.Session.StartedFromBeginning) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.DASHES_TOTAL_FCN, new FunctionRoutine(0, (ctx, args) =>
-                SaveData.Instance == null ? new ExpressionToken("-1")
-                : new(SaveData.Instance.TotalDashes.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.DASHES_SESSION_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Level level ? new ExpressionToken(level.Session.Dashes.ToString()) : new ExpressionToken("-1")));
-            context.RegisterFunction(ConditionWatcher.LEVEL_START_DASHES_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Level level ? new ExpressionToken(level.Session.DashesAtLevelStart.ToString()) : new ExpressionToken("-1")));
-            context.RegisterFunction(ConditionWatcher.DEATHS_TOTAL_FCN, new FunctionRoutine(0, (ctx, args) =>
-                SaveData.Instance == null ? new ExpressionToken("-1")
-                : new(SaveData.Instance.TotalDeaths.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.DEATHS_CH_FCN, new FunctionRoutine(0, (ctx, args) =>
-                (SaveData.Instance == null || Engine.Scene is not Level level || level.Session is not Session session) ? new ExpressionToken("-1")
-                : new(SaveData.Instance.Areas[session.Area.ID].Modes[(int)session.Area.Mode].Deaths.ToString())
-            ));
-            context.RegisterFunction(ConditionWatcher.DEATHS_SESSION_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Level level ? new ExpressionToken(level.Session.Deaths.ToString()) : new ExpressionToken("-1")));
-            context.RegisterFunction(ConditionWatcher.DEATHS_SCREEN_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Level level ? new ExpressionToken(level.Session.DeathsInCurrentLevel.ToString()) : new ExpressionToken("-1")));
-            context.RegisterFunction(ConditionWatcher.TIME_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Level level ? new ExpressionToken(level.Session.Time.ToString()) : new ExpressionToken("-1")));
-            context.RegisterFunction(ConditionWatcher.IN_OVERWORLD_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene is Overworld ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.SID_FCN, new FunctionRoutine(0, (ctx, args) => (Engine.Scene is Level level && level.Session is not null) ? new ExpressionToken(level.Session.Area.SID ?? "") : new ExpressionToken("")));
-            context.RegisterFunction(ConditionWatcher.LEVEL_FCN, new FunctionRoutine(0, (ctx, args) => (Engine.Scene is Level level && level.Session is not null) ? new ExpressionToken(level.Session.Level) : new ExpressionToken("")));
-            context.RegisterFunction(ConditionWatcher.PLAYER_IN_SCENE_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Tracker.GetEntity<Player>() != null ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.PLAYER_DEAD_BODY_IN_SCENE_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Entities.Any(e => e is PlayerDeadBody) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction(ConditionWatcher.PLAYER_X_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Tracker.GetEntity<Player>() is Player player ? new ExpressionToken(player.X.ToString()) : new ExpressionToken("0")));
-            context.RegisterFunction(ConditionWatcher.PLAYER_Y_FCN, new FunctionRoutine(0, (ctx, args) => Engine.Scene.Tracker.GetEntity<Player>() is Player player ? new ExpressionToken(player.Y.ToString()) : new ExpressionToken("0")));
-
-            // Utility
-            context.RegisterFunction("strContains", new FunctionRoutine(2, (ctx, args) => args[0].Value.Contains(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction("strStartsWith", new FunctionRoutine(2, (ctx, args) => args[0].Value.StartsWith(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction("strEndsWith", new FunctionRoutine(2, (ctx, args) => args[0].Value.EndsWith(args[1].Value) ? ExpressionToken.True : ExpressionToken.False));
-            context.RegisterFunction("strLen", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.Length.ToString())));
-            context.RegisterFunction("strToLower", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.ToLower())));
-            context.RegisterFunction("strToUpper", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.ToUpper())));
-            context.RegisterFunction("strTrim", new FunctionRoutine(1, (ctx, args) => new(args[0].Value.Trim())));
-
-            ExpressionEvaluator = new Evaluator(context);
         }
 
         public override void Initialize() {
@@ -192,11 +121,9 @@ namespace Celeste.Mod.AchievementHelper {
             On.Celeste.OuiChapterSelect.Leave -= OuiChapterSelect_Leave;
             On.Celeste.OuiChapterSelect.Update -= OuiChapterSelect_Update;
 
-            On.Celeste.SaveData.InitializeDebugMode += SaveData_InitializeDebugMode;
+            On.Celeste.SaveData.InitializeDebugMode -= SaveData_InitializeDebugMode;
 
             Everest.Content.OnUpdate -= onModAssetUpdate;
-
-            ConditionWatcher.Unload();
         }
     }
 }

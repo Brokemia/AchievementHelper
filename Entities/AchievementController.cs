@@ -1,8 +1,6 @@
 ﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
-using Soukoku.ExpressionParser;
-using System;
 
 namespace Celeste.Mod.AchievementHelper.Entities {
     [CustomEntity("achievementHelper/achievementController")]
@@ -20,12 +18,12 @@ namespace Celeste.Mod.AchievementHelper.Entities {
 
         public override void Added(Scene scene) {
             base.Added(scene);
-            watchingID = AchievementHelperModule.Instance.ConditionWatcher.WatchConditions(condition, Check);
+            watchingID = ConditionHelperImports.WatchConditions(condition, Check);
         }
 
         public override void Removed(Scene scene) {
             base.Removed(scene);
-            AchievementHelperModule.Instance.ConditionWatcher.RemoveCallback(watchingID);
+            ConditionHelperImports.RemoveCallback(watchingID);
         }
 
         public override void Awake(Scene scene) {
@@ -37,7 +35,7 @@ namespace Celeste.Mod.AchievementHelper.Entities {
         }
 
         private void Check() {
-            if (condition.Equals("") || AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(condition, true).Equals(ExpressionToken.True)) {
+            if (condition.Equals("") || ConditionHelperImports.EvaluateConditionExpression(condition)) {
                 AchievementManager.Instance.TriggerAchievement(modName, achievementName);
                 RemoveSelf();
             }

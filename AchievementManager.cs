@@ -1,5 +1,4 @@
-﻿using Soukoku.ExpressionParser;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Celeste.Mod.AchievementHelper {
     public class AchievementManager {
@@ -17,7 +16,7 @@ namespace Celeste.Mod.AchievementHelper {
             }
             // Unregister any old callback
             if(watchingIDs.ContainsKey(achievement.Mod) && watchingIDs[achievement.Mod].ContainsKey(achievement.Name)) {
-                AchievementHelperModule.Instance.ConditionWatcher.RemoveCallback(watchingIDs[achievement.Mod][achievement.Name]);
+                ConditionHelperImports.RemoveCallback(watchingIDs[achievement.Mod][achievement.Name]);
                 watchingIDs[achievement.Mod].Remove(achievement.Name);
             }
             RegisteredAchievements[achievement.Mod][achievement.Name] = achievement;
@@ -26,8 +25,8 @@ namespace Celeste.Mod.AchievementHelper {
                 if(!watchingIDs.ContainsKey(achievement.Mod)) {
                     watchingIDs[achievement.Mod] = new();
                 }
-                watchingIDs[achievement.Mod][achievement.Name] = AchievementHelperModule.Instance.ConditionWatcher.WatchConditions(achievement.Condition, () => {
-                    if (AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(achievement.Condition, true).Equals(ExpressionToken.True)) {
+                watchingIDs[achievement.Mod][achievement.Name] = ConditionHelperImports.WatchConditions(achievement.Condition, () => {
+                    if (ConditionHelperImports.EvaluateConditionExpression(achievement.Condition)) {
                         TriggerAchievement(achievement.Mod, achievement.Name);
                     }
                 });

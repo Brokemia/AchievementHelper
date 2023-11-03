@@ -1,7 +1,6 @@
 ﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
-using Soukoku.ExpressionParser;
 
 namespace Celeste.Mod.AchievementHelper.Triggers {
     [CustomEntity("achievementHelper/triggerAchievement")]
@@ -23,7 +22,7 @@ namespace Celeste.Mod.AchievementHelper.Triggers {
 
         public override void OnEnter(Player player) {
             base.OnEnter(player);
-            if (condition.Equals("") || AchievementHelperModule.Instance.ExpressionEvaluator.Evaluate(condition, true).Equals(ExpressionToken.True)) {
+            if (condition.Equals("") || ConditionHelperImports.EvaluateConditionExpression(condition)) {
                 AchievementManager.Instance.TriggerAchievement(modName, achievementName);
                 RemoveSelf();
             }
